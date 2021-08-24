@@ -51,7 +51,9 @@ class App extends React.Component {
         let color = "white"
         switch(data) {
           case "positive": color = "green";
+          /* falls through */
           case "negative": color = "red";
+          /* falls through */
           default: color = "yellow";
         }
         output = <div style={{color:{color},fontSize:20}}>{data}</div>
