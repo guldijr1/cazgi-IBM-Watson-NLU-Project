@@ -50,9 +50,9 @@ class App extends React.Component {
         let output = data;
         let color = "white"
         switch(data) {
-          case "positive": color = "black";
-          case "negative": color = "black";
-          default: color = "black";
+          case "positive": color = "green";
+          case "negative": color = "red";
+          default: color = "yellow";
         }
         output = <div style={{color:{color},fontSize:20}}>{data}</div>
         this.setState({sentimentOutput:output});
