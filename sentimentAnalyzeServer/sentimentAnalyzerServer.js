@@ -77,12 +77,36 @@ app.get("/url/sentiment", (req,res) => {
              "url": urlToAnalyze,
              "features": {
                  "keywords": {
-                                 "emotion": true,
+                                 "sentiment": true,
                                  "limit": 1
                              }
              }
          }
      
+      const naturalLanguageUnderstanding = getNLUInstance();
+     
+      naturalLanguageUnderstanding.analyze(analyzeParams)
+      .then(analysisResults => {
+    //     //Print the JSON returned by NLU instance as a formatted string
+         console.log(JSON.stringify(analysisResults.result.keywords[0].emotion,null,2));
+    //     //Please refer to the image to see the order of retrieval
+         return res.send(analysisResults.result.keywords[0].sentiment,null,2);
+      })
+      .catch(err => {
+      return res.send("Could not do desired operation "+err);
+      });
+});
+
+//The endpoint for the webserver ending with /text/emotion
+app.get("/text/emotion", (req,res) => {
+     const input= {
+        'text': req.query.text,  
+        'features': {
+            'emotion': {  
+            'limit': 5  
+            }
+        }
+    }   
       const naturalLanguageUnderstanding = getNLUInstance();
      
       naturalLanguageUnderstanding.analyze(analyzeParams)
@@ -97,13 +121,26 @@ app.get("/url/sentiment", (req,res) => {
       });
 });
 
-//The endpoint for the webserver ending with /text/emotion
-app.get("/text/emotion", (req,res) => {
-    return res.send({"happy":"10","sad":"90"});
-});
-
 app.get("/text/sentiment", (req,res) => {
-    return res.send("text sentiment for "+req.query.text);
+     const input = {
+        'text': req.query.text,
+        'features': {
+            'sentiment': { 
+            }
+        }
+    }   
+       const naturalLanguageUnderstanding = getNLUInstance();
+     
+      naturalLanguageUnderstanding.analyze(analyzeParams)
+      .then(analysisResults => {
+    //     //Print the JSON returned by NLU instance as a formatted string
+         console.log(JSON.stringify(analysisResults.result.keywords[0].emotion,null,2));
+    //     //Please refer to the image to see the order of retrieval
+         return res.send(analysisResults.result.keywords[0].sentiment,null,2);
+      })
+      .catch(err => {
+      return res.send("Could not do desired operation "+err);
+      });
 });
 
 let server = app.listen(8080, () => {
